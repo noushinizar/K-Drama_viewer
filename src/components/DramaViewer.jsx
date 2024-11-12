@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { fetchDramas, fetchDramaWithTrailer } from '../redux/dramaSlice';
+import { fetchDramas, fetchDramaWithTrailer,clearSelectedDrama } from '../redux/dramaSlice';
 
 const DramaViewer = () => {
     const dispatch = useDispatch();
@@ -26,6 +26,7 @@ const DramaViewer = () => {
     const handleModalClose = () => {
         setIsModalOpen(false); 
         setTrailerUrl(null);
+        dispatch(clearSelectedDrama());
     };
     const truncateString =(str,num)=>{
         if(str?.length>num){
@@ -83,16 +84,21 @@ const DramaViewer = () => {
                             </button>
                         </div>
                         <div className="relative aspect-w-16 aspect-h-9">
-                            <div className="flex justify-center">
-                                <iframe
-                                    className="w-full h-64 sm:h-96"
-                                    src={`https://www.youtube.com/embed/${trailerUrl.split('v=')[1]}`}
-                                    title="Trailer"
-                                    frameBorder="0"
-                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                                    allowFullScreen
-                                ></iframe>
-                            </div>
+                            {trailerUrl?(
+                               <div className="flex justify-center">
+                               <iframe
+                                   className="w-full h-64 sm:h-96"
+                                   src={`https://www.youtube.com/embed/${trailerUrl.split('v=')[1]}`}
+                                   title="Trailer"
+                                   frameBorder="0"
+                                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                   allowFullScreen
+                               ></iframe>
+                           </div>
+                            ):(
+                                 <p className="text-center text-gray-500 mt-4">No trailer available</p>
+                            )}
+                           
                         </div>
                     </div>
                 </div>

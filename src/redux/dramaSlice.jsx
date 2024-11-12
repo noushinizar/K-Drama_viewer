@@ -10,10 +10,10 @@ export const fetchDramas = createAsyncThunk('dramas/fetchDramas', async () => {
     const response = await axios.get(`https://api.themoviedb.org/3/discover/tv`, {
         params: {
             api_key: API_KEY,
-            language: 'en-US', // Set to Korean language
+            language: 'en-US', 
             sort_by: 'popularity.desc', // Trending/popular sorting
             with_original_language: 'ko', // Only Korean shows
-            page: 2
+            page: 3
         }
     });
     return response.data.results;
@@ -43,7 +43,11 @@ const dramaSlice = createSlice({
         loading: false,
         error: null,
     },
-    reducers: {},
+    reducers: {
+        clearSelectedDrama: (state) => {
+            state.selectedDrama = null;
+        }
+    },
     extraReducers: (builder) => {
         builder
             .addCase(fetchDramas.pending, (state) => {
@@ -73,4 +77,5 @@ const dramaSlice = createSlice({
     }
 });
 
+export const { clearSelectedDrama } = dramaSlice.actions;
 export default dramaSlice.reducer;
